@@ -6,7 +6,7 @@ import io.qameta.allure.Allure;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.OutputType;
-
+import static com.codeborne.selenide.Selectors.byAttribute;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -30,13 +30,14 @@ public class LambdaAllureTests {
         step("Open URL", ()-> {
             open(URL);
         });
-        step("Find Repository", ()-> {
+        step("Search for Repository", ()-> {
             $("input[name='q']").click();
             $("input[name='q']").sendKeys(REPOSITORY);
             $("input[name='q']").submit();
         });
-        step("Step into Repository", ()-> {
-            $(".repo-list").$("a").click();
+        step("Step into Repository", (s)-> {
+            s.parameter("repository", REPOSITORY);
+            $(byAttribute("href", "/"+REPOSITORY)).click();
         });
         step("Switch to Issues tab", ()-> {
             $("span[data-content='Issues']").click();
